@@ -1,4 +1,5 @@
 import os
+import time
 import discord
 from discord.ext import commands 
 from Keep_alive import keep_alive
@@ -17,7 +18,7 @@ bot.remove_command("help")
 @bot.event
 async def on_ready():
 	print(">>> Bot Is Online <<<")
-	await bot.change_presence(activity=discord.Game("沙花叉クロヱ"))
+	await bot.change_presence(activity=discord.Game("/help || 加入 SharkParty"))
 
 #Load Cog
 #/load {Cog Name}

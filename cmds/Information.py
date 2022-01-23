@@ -1,4 +1,5 @@
 import random
+from tkinter import E
 import discord
 from discord.ui import Button, View
 from discord.ext import commands
@@ -254,6 +255,22 @@ class Information(Cog_Core):
         , color=0xb99090)
         await ctx.send(embed=embed)
 
+    #/EmbedOP...
+    #/embedop
+    @commands.command()
+    async def embedop(self, ctx):
+        embed = discord.Embed(color=0xb99090)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/877511827116945418/934722300924788756/7cf92cb6bb8c9b23.png")
+        await ctx.send(embed=embed)
+
+    #/EmbedED...
+    #/embeded
+    @commands.command()
+    async def embeded(self, ctx):
+        embed = discord.Embed(color=0xb99090)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/877511827116945418/934722301440696380/53c3caeb99592fc0.png")
+        await ctx.send(embed=embed)
+
     #ADD Reaction
     @commands.Cog.listener()
     async def on_message(self, msg):
@@ -284,6 +301,14 @@ class Information(Cog_Core):
                 role = guild.get_role(922852347351298139)
                 user = await guild.fetch_member(data.user_id)
                 await user.remove_roles(role)
+
+    #自動更新
+    @commands.command()
+    async def op(self, ctx):
+        embed = discord.Embed(title="<:Minecraft_Heart:924321182768058369> **以上會每天自動更新喔** <:Minecraft_Heart:924321182768058369>"
+        , color=0xb99090)
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Information(bot))
