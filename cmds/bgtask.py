@@ -20,8 +20,9 @@ class bgtask(Cog_Core):
                     VC_BlackList = []
                     VC_BlackList.append(965841503618494464) #Dec
                     VC_BlackList.append(968696824498110484) #Dec
-                    VC_BlackList.append(976380005028360263) #Temp
                     VC_BlackList.append(974644887343493151) #Temp
+                    VC_BlackList.append(979184947799674880) #Temp
+                    VC_BlackList.append(979051165910204486) #Temp
                     for VC in VC_List:
                         BlackList = False
                         if VC.members == []:

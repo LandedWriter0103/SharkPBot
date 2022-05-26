@@ -1,1 +1,10 @@
+SharkPBot.code-workspace
+
+TPPI.py
+Keep_alive.py
+
 .env
+.DS_Store
+
+__pycache__
+
