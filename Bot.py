@@ -1,52 +1,56 @@
+#插件導入
+# OS => 讀取 .env 檔裡的 TOKEN
+# Discord => 本次的重點Package
+from discord.ext import commands
+from dotenv import load_dotenv
 import os
-import time
+
+import asyncio
 import discord
-from discord.ext import commands 
-from Keep_alive import keep_alive
-from discord.ui import Button, View
 
-#Keep the Bot 24/7 with UptimeRobot's DashBoard
-keep_alive()
+load_dotenv()
 
-#Set the Discord Server Prefix = /
+#把機器人的Command Prefix設為 = /
 bot = commands.Bot(command_prefix="/")
 
-#Remove Useless Help Command
+#把預設的 /help 指令移除 => 以便未來自行設計
 bot.remove_command("help")
 
-#Bot Online
+#偵測機器人上線
 @bot.event
 async def on_ready():
-	print(">>> Bot Is Online <<<")
-	await bot.change_presence(activity=discord.Game("/help || 加入 SharkParty"))
+	
+    #傳出 機器人已上線
+	print(">>> 機器人已上線 <<<")
+    #客製化機器人狀態
+	await bot.change_presence(activity=discord.Game("/help || 加入SharkParty"))
 
-#Load Cog
-#/load {Cog Name}
+#在Discord中 => 載入, 卸載, 重載Cog => 可以減少大量的Debug時間
+
+#載入Cog => /load {Cog名稱}
 @bot.command()
 async def load(ctx, extension):
 	bot.load_extension(f"cmds.{extension}")
-	await ctx.send(f"Loaded {extension} Done!") 
+	await ctx.send(f"**[ {extension} ]** 載入完畢！") 
 
-#Unload Cog
-#/unload {Cog Name}
+#卸載Cog => /unload {Cog名稱}
 @bot.command()
 async def unload(ctx, extension):
 	bot.unload_extension(f"cmds.{extension}")
-	await ctx.send(f"Unloaded {extension} Done!")
+	await ctx.send(f"**[ {extension} ]** 卸載完畢！")
 
-#Reload Cog
-#/reload {Cog Name}
+#重載Cog => /reload {Cog名稱}
 @bot.command()
 async def reload(ctx, extension):
 	bot.reload_extension(f"cmds.{extension}")
-	await ctx.send(f"Reloaded {extension} Done!")
+	await ctx.send(f"**[ {extension} ]** 重載完畢！")
 
-#To tell the Bot what/where are the Cog files
+#找和跑 => Cog檔
 for filename in os.listdir("./cmds"):
 	if filename.endswith(".py"):
 		bot.load_extension(f"cmds.{filename[:-3]}")
 
-#Load the Bot on
+#載入密鑰 => 讓Bot活起來
 if __name__ == "__main__":
 	token = os.getenv("TOKEN")
 	bot.run(token)

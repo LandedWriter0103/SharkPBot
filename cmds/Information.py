@@ -1,12 +1,35 @@
-import random
-from tkinter import E
 import discord
-from discord.ui import Button, View
 from discord.ext import commands
 from MainCore.Classes import Cog_Core
 
 class Information(Cog_Core):
     
+    #Minecraft Server Information
+    #/server1
+    @commands.command()
+    async def server1(self, ctx):
+        embed=discord.Embed(description=
+        "**===============================**" 
+        "\n" "\n" 
+        "**麥塊服資訊**" 
+        "\n" "\n" 
+        "**===============================**" 
+        , color=0xb99090)
+        embed.add_field(name="**原味服-ESSS服IP**", value="> mc.yuwuy.com", inline=True)
+        embed.add_field(name="**模組服-佬服IP**", value="> mod.yuwuy.com", inline=True)
+        embed.add_field(name="\u200b", value="\u200b")
+        embed.add_field(name="**ESSS服位置**", value="> 臺灣 - 新北市", inline=True)
+        embed.add_field(name="**佬服位置**", value="> 臺灣 - 臺南市", inline=True)
+        embed.add_field(name="\u200b", value="\u200b")
+        embed.add_field(name="**目前版本**", value="> 原版" "\n" "> 1.18.1", inline=True)
+        embed.add_field(name="**目前模組包**", value="> FTB" "\n" "> Infinity Evolved" "\n" "> 3.1.0", inline=True)
+        embed.add_field(name="\u200b", value="\u200b")
+        embed.add_field(name="**備註**", value="> 暫無", inline=True)
+        embed.add_field(name="**備註**", value="> FTBApp" "\n" "> CurseForge", inline=True)
+        embed.add_field(name="\u200b", value="\u200b")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/937218945415524424/939075228649267220/Server.png")
+        await ctx.send(embed=embed)
+
     #First Content to send in Rules
     #/first
     @commands.command()
@@ -274,7 +297,11 @@ class Information(Cog_Core):
     #ADD Reaction
     @commands.Cog.listener()
     async def on_message(self, msg):
-        if msg.content == "Reaction":
+        
+        if msg.author == self.bot.user:
+            return
+
+        elif msg.content == "Reaction":
             channel = self.bot.get_channel(922497110115504208)
             message = await channel.fetch_message(924486727886839858)
             await message.add_reaction("<:verify:924298892818919424>")
