@@ -1,3 +1,4 @@
+from asyncio.proactor_events import _ProactorBasePipeTransport
 import discord
 from discord.ext import commands
 from MainCore.Classes import Cog_Core
@@ -16,8 +17,8 @@ class Event(Cog_Core):
         VC_BlackList = []
         VC_BlackList.append(965841503618494464) #Dec
         VC_BlackList.append(968696824498110484) #Dec
-        VC_BlackList.append(976380005028360263) #Temp
-        VC_BlackList.append(974644887343493151) #Temp
+        VC_BlackList.append(995487664985870476) #temp
+        VC_BlackList.append(994525852454883418) #temp
             
         # Member Joins a VC
         if VC_Join == str(None):
@@ -34,7 +35,11 @@ class Event(Cog_Core):
             # Delete the Channel => When No Users
             if after.channel.members == []:
                 if after.channel.id not in VC_BlackList:
-                    await after.channel.delete()
+                    try:
+                        await after.channel.delete()
+                    except:
+                        pass
+                    
 
     @commands.Cog.listener()
     async def on_message(self, msg):
@@ -44,17 +49,32 @@ class Event(Cog_Core):
         if CH_A == msg.channel and msg.author != self.bot.user:
             try:
                 if msg.content.startswith("create"):
-                    CT_A = msg.content.split()
-                    CH_NAME = CT_A[2]
+                    CT_A = msg.content.split(" | ")
+                    CH_NAME = CT_A[1]
                     CH_NAME = "《🔊》" + CH_NAME
-                    CH_LIMITS = int(CT_A[4])
+                    
+                    try:
+                        CH_LIMITS = int(CT_A[2])
+                    except:
+                        CH_LIMITS = 0
+
                     guild = self.bot.get_guild(922465596602470420)
                     CA_A = CH_A.category
-                    await guild.create_voice_channel(CH_NAME, category=CA_A, user_limit=CH_LIMITS, bitrate=128000, position=1)
+                    await guild.create_voice_channel(CH_NAME, category=CA_A, user_limit=CH_LIMITS, bitrate=384000, position=1)
+
             except:
                 await CH_A.send(content="**格式錯誤了喔** <:Minecraft_Heart:924321182768058369>")
+
+        #6-pin hacker
+        CH_B = self.bot.get_channel(957616454268780565)
+        if CH_B == msg.channel and msg.author != self.bot.user:
+            try:
+                if len(msg.content) == 6:
+                    await msg.delete()
+                    await CH_B.send(content=f"https://nhentai.net/g/{msg.content}")
+            except:
+                pass
                 
-    
     @commands.Cog.listener()
     async def on_raw_message_edit(self, data):
 

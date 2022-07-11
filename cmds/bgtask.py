@@ -2,6 +2,7 @@ from mcipc.query import Client
 from discord.ext import commands
 from MainCore.Classes import Cog_Core
 
+import json
 import discord
 import asyncio
 
@@ -20,9 +21,9 @@ class bgtask(Cog_Core):
                     VC_BlackList = []
                     VC_BlackList.append(965841503618494464) #Dec
                     VC_BlackList.append(968696824498110484) #Dec
-                    VC_BlackList.append(974644887343493151) #Temp
-                    VC_BlackList.append(979184947799674880) #Temp
-                    VC_BlackList.append(979051165910204486) #Temp
+                    VC_BlackList.append(995487664985870476) #temp
+                    VC_BlackList.append(994525852454883418) #temp
+
                     for VC in VC_List:
                         BlackList = False
                         if VC.members == []:
@@ -40,6 +41,10 @@ class bgtask(Cog_Core):
                 #=====
 
                 #Server Status
+
+                with open("./cache/max_player.json", "r") as js:
+                    cache = json.load(js)
+
                 try:
                     with Client("mc.yuwuy.com", 25576, timeout=2) as client:
                         full_stats = client.stats(full=True)
@@ -60,34 +65,36 @@ class bgtask(Cog_Core):
 
                 #Max Online Players
                 #Read if >= Old Data
-                with open("./cache/max_player.txt", "r") as cache:
+                max_players = cache["mc"]
                     
+                if players_num == "N":
+                    pass
+                elif players_num >= max_players:
+                    more_players = True
+                else:
                     more_players = False
-                    max_players = int(cache.readline())
-                    
-                    if players_num == "N":
-                        pass
-                    elif players_num >= max_players:
-                        more_players = True
-                    else:
-                        more_players = False
-
+                
                 #Write if True
-                with open("./cache/max_player.txt", "w") as cache:
+                try:
                     if more_players == True:
-                        cache.write(str(players_num))
+                        cache["mc"] = players_num
                     else:
-                        cache.write(str(max_players))
+                        cache["mc"] = max_players
+                except:
+                    pass
                         
                 #Take Latest Data
-                with open("./cache/max_player.txt", "r") as cache:
-                    max_players = int(cache.readline())
+                max_players = cache["mc"]
+
+                with open("./cache/max_player.json", "w") as js:
+                    json.dump(cache, js)
 
                 #TC => Target Text Channe => Where you will export the result
                 #TM => Target Message => The message you will edit the result
                 #TM MUST BE SENT BY BOT
                 TC_Server_Info = self.bot.get_channel(962336732404138024) #Target Text Channel
                 TM_Server_Info_Mod = await TC_Server_Info.fetch_message(962338706042261566) #Target Message to Edit => Mod Server 
+
                 RT_Server_Info_Mod = discord.Embed(title= #Design & Return Embed
                 "❖ ========================= ❖" 
                 "\n" "\n" 
@@ -95,7 +102,7 @@ class bgtask(Cog_Core):
                 "\n" "\n" 
                 "❖ ========================= ❖"
                 , color=0xb99090)
-
+                
                 RT_Server_Info_Mod.add_field(name="伺服器遊戲", value=f"> Minecraft Java | BE", inline=False)
                 RT_Server_Info_Mod.add_field(name="伺服器 IP", value="> mc.yuwuy.com", inline=True)
                 RT_Server_Info_Mod.add_field(name="伺服器 Port", value="> 25566", inline=True)
@@ -114,9 +121,9 @@ class bgtask(Cog_Core):
 
                 #else:
                     #pass
-                
+
                 await TM_Server_Info_Mod.edit(content="", embed=RT_Server_Info_Mod)
-                await asyncio.sleep(8)
+                await asyncio.sleep(60)
 
         self.bg_task = self.bot.loop.create_task(infi_loop_server_info())
         
